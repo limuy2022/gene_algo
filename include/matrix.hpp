@@ -7,7 +7,7 @@ public:
 	int n, m;
 	std::vector<std::vector<double>> data;
 	
-	matrix() = default;
+	// matrix() = default;
 	
 	matrix(int n, int m);
 	

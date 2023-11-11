@@ -55,26 +55,24 @@ namespace nervenet {
 				}
 			}
 			// 随机边权重
-			for(auto& matri:son.nerves) {
-				for(int j = 1; j <= son.nervenum; ++j) {
-					for(int k = 1; k <= matri.n; ++k) {
-						for(int l = 1; l <= matri.m; ++l) {
-							if(rands::rand32() % 1000 < share::mutation * 1000) {
-								// 变异
-								if(rands::rand32() % 1000 < share::bigmutation * 1000) {
-									// 大范围变异
-									son.nerves[j].data[k][l] = rands::bigrand(rands::rand32);
-								} else {
-									// 小范围变异
-									son.nerves[j].data[k][l] = rands::initrand(rands::rand32);
-								}
+			for(int j = 0; j < nerves.size(); ++j) {
+				for(int k = 1; k <= nerves[j].n; ++k) {
+					for(int l = 1; l <= nerves[j].m; ++l) {
+						if(rands::rand32() % 1000 < share::mutation * 1000) {
+							// 变异
+							if(rands::rand32() % 1000 < share::bigmutation * 1000) {
+								// 大范围变异
+								son.nerves[j].data[k][l] = rands::bigrand(rands::rand32);
 							} else {
-								// 不变异,随机继承
-								if(rands::rand32() % 2 == 1) {
-									son.nerves[j].data[k][l] = mother.nerves[j].data[k][l];	
-								} else {
-									son.nerves[j].data[k][l] = matri.data[k][l];
-								}
+								// 小范围变异
+								son.nerves[j].data[k][l] = rands::initrand(rands::rand32);
+							}
+						} else {
+							// 不变异,随机继承
+							if(rands::rand32() % 2 == 1) {
+								son.nerves[j].data[k][l] = mother.nerves[j].data[k][l];	
+							} else {
+								son.nerves[j].data[k][l] = nerves[j].data[k][l];
 							}
 						}
 					}
@@ -90,8 +88,10 @@ namespace nervenet {
 		for (size_t i = 1; i <= data.val.size() + 1; ++i) {
 			s.data[1][i] = data.val[i - 1];
 		}
-		for (const auto&i : nerves) {
-			s = s * i;
+		s = s + bias[0];
+		for(int i = 0; i < layer - 1; ++i) {
+			s = s * nerves[i];
+			s = s + bias[i + 1];
 		}
 		std::vector<double> v;
 		for (int i = 1; i <= s.m; ++i) {

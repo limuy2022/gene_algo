@@ -1,8 +1,9 @@
 add_rules("mode.debug", "mode.release")
 set_optimize("fast")
 set_warnings("all")
-set_languages("c++17")
+set_languages("c++17", "c17")
 set_rundir(".")
+set_targetdir(".")
 
 target("gene_algo")
     set_kind("binary")

@@ -2,7 +2,7 @@
 #include <mnist.hpp>
 
 // 数据路径
-#define datapath(x) "data/" x
+#define datapath(x) "./data/" x
 
 namespace share {
 	// 训练数据

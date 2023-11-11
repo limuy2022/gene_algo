@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <cstdlib>
 #include <vector>
 #include <cstring>
 #include <matrix.hpp>
@@ -9,6 +10,10 @@
 #include <random>
 #include <rand.hpp>
 #include <algorithm>
+#include <filesystem>
+
+namespace fs = std::filesystem;
+
 
 std::vector<nervenet::nervenet> sons;
 std::initializer_list<size_t> networksize = {784, 20, 20, 10};
@@ -55,15 +60,36 @@ void reproduction() {
 	}
 }
 
+void save_data(const nervenet::nervenet& net, const fs::path&res) {
+	std::ofstream file(res);
+	for(int j = 0; j < net.nerves.size(); ++j) {
+		for(int k = 1; k <= net.nerves[j].n; ++k) {
+			for(int l = 1; l <= net.nerves[j].m; ++l) {
+				
+			}
+		}
+	}
+	file.close();
+}
+
 int main(int argc, char** argv) {
-	if(argc == 2 && !strcmp(argv[1], "mnist")) {
-		mnist::initdata(datapath("train-images.idx3-ubyte"), datapath("train-labels.idx1-ubyte"));
-		mnist::initdata(datapath("t10k-images.idx3-ubyte"), datapath("t10k-labels.idx1-ubyte"));
+	if(argc == 2) {
+		if(!strcmp(argv[1], "mnist")) {
+			mnist::initdata(datapath("train-images-idx3-ubyte"), datapath("train-labels-idx1-ubyte"));
+			mnist::initdata(datapath("t10k-images-idx3-ubyte"), datapath("t10k-labels-idx1-ubyte"));
+		} else if(!strcmp(argv[1], "test")) {
+			
+		} else {
+			std::cerr << "unrecognized option";
+			exit(EXIT_FAILURE);
+		}
 	}
 	// 读取数据
-	share::traindata = mnist::load(datapath("train-images.data"), datapath("train-labels.data"));
-	share::testdata = mnist::load(datapath("t10k-images.data"), datapath("t10k-labels.data"));
+	share::traindata = mnist::load(datapath("train-images-idx3-ubyte-data"), datapath("train-labels-idx1-ubyte-data"));
+	share::testdata = mnist::load(datapath("t10k-images-idx3-ubyte-data"), datapath("t10k-labels-idx1-ubyte-data"));
 	init_sons();
 	reproduction();
+	std::sort(sons.begin(), sons.end(), ratecmp);
+	
 	return 0;
 }

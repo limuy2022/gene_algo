@@ -6,6 +6,7 @@
 
 namespace nervenet {
 	class nervenet {
+	public:
 		// 每一列的矩阵
 		std::vector<matrix> nerves;
 		// 偏置参数
@@ -16,7 +17,7 @@ namespace nervenet {
 		int nervenum = 0;
 		// 神经元层数
 		int layer = 0;
-	public:
+		
 		// 上一次估价函数的得分
 		double rate = 0;
 

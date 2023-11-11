@@ -3,7 +3,7 @@
 
 matrix::matrix(int n, int m):n(n), m(m) {
 	data.resize(n + 1);
-	for(auto i:data) {
+	for(auto& i:data) {
 		i.resize(m + 1);
 	}
 }
