@@ -7,6 +7,10 @@ urls = [
     "t10k-labels-idx1-ubyte.gz"
 ]
 
+try:
+    os.mkdir("../data")
+except:
+    pass
 os.chdir("../data")
 
 for i in urls:

@@ -1,10 +1,16 @@
 #include <nervenet.hpp>
+#include <share.hpp>
+#include <vector>
+#include <rand.hpp>
 
 namespace nervenet {
 	nervenet::nervenet(std::initializer_list<size_t> input): netsize(input) {
 		auto en = input.end() - 1;
 		for (auto i = input.begin(); i != en; ++i) {
 			nerves.emplace_back(*i, *(i + 1));
+		}
+		for(auto i : input) {
+			nervenum += i;
 		}
 	}
 
@@ -17,10 +23,60 @@ namespace nervenet {
 		}
 	}
 
-	nervenet nervenet::reproduction(const nervenet& mother) {
-		nervenet son(netsize);
-		
-		return son;
+	std::vector<nervenet> nervenet::reproduction(const nervenet& mother) {
+		std::vector<nervenet> res;
+		// 随机产生后代，后代每一个参数从亲代等概率选择
+		for(int i = 1; i <= share::delivery_son; ++i) {
+			nervenet son(netsize);
+			// 随机bias
+			for(int j = 1; j <= son.nervenum; ++j) {
+				if(rands::rand32() % 1000 < share::mutation * 1000) {
+					// 变异
+					if(rands::rand32() % 1000 < share::bigmutation * 1000) {
+						// 大范围变异
+						son.bias[j] = rands::bigrand(rands::rand32);
+					} else {
+						// 小范围变异
+						son.bias[j] = rands::initrand(rands::rand32);
+					}
+				} else {
+					// 不变异,随机继承
+					if(rands::rand32() % 2 == 1) {
+						son.bias[j] = mother.bias[j];	
+					} else {
+						son.bias[j] = bias[j];
+					}
+				}
+			}
+			// 随机边权重
+			for(auto& matri:son.nerves) {
+				for(int j = 1; j <= son.nervenum; ++j) {
+					for(int k = 1; k <= matri.n; ++k) {
+						for(int l = 1; l <= matri.m; ++l) {
+							if(rands::rand32() % 1000 < share::mutation * 1000) {
+								// 变异
+								if(rands::rand32() % 1000 < share::bigmutation * 1000) {
+									// 大范围变异
+									son.nerves[j].data[k][l] = rands::bigrand(rands::rand32);
+								} else {
+									// 小范围变异
+									son.nerves[j].data[k][l] = rands::initrand(rands::rand32);
+								}
+							} else {
+								// 不变异,随机继承
+								if(rands::rand32() % 2 == 1) {
+									son.nerves[j].data[k][l] = mother.nerves[j].data[k][l];	
+								} else {
+									son.nerves[j].data[k][l] = matri.data[k][l];
+								}
+							}
+						}
+					}
+				}
+			}
+			res.push_back(son);
+		}
+		return res;
 	}
 
 	std::vector<double> nervenet::calans(const mnist::pic& data) {
@@ -39,7 +95,20 @@ namespace nervenet {
 	}
 	
 	double nervenet::valfunc(const mnist::train_data& data) {
-		
+		rate = 0;
+		for(const auto&i:data.data) {
+			std::vector<double> ans = calans(i);
+			// 计算正确率
+			for(auto j:ans) {
+				if(j == i.number) {
+					rate += (1 - j) * (1 - j);
+				} else {
+					rate += (0 - j) * (0 - j);
+				}
+			}
+		}
+		rate /= data.data.size();
+		return rate;
 	}
 }
 

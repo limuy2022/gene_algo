@@ -10,17 +10,28 @@ namespace nervenet {
 		std::vector<matrix> nerves;
 		// 偏置参数
 		std::vector<double> bias;
+		// 矩阵规格
 		std::initializer_list<size_t> netsize;
+		// 神经元个数
+		int nervenum = 0;
 	public:
+		// 上一次估价函数的得分
+		double rate = 0;
+		
 		nervenet(std::initializer_list<size_t> input);
 		
 		void randinit();
 		
-		nervenet reproduction(const nervenet& mother);
+		std::vector<nervenet> reproduction(const nervenet& mother);
 		
+		/**
+		@brief 计算一张图片的神经网络输出
+		*/
 		std::vector<double> calans(const mnist::pic& data);
 		
+		/**
+		@brief 估价函数，估计该神经网络的正确率
+		*/
 		double valfunc(const mnist::train_data& data);
 	};
 }
-

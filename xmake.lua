@@ -2,6 +2,7 @@ add_rules("mode.debug", "mode.release")
 set_optimize("fast")
 set_warnings("all")
 set_languages("c++17")
+set_rundir(".")
 
 target("gene_algo")
     set_kind("binary")
