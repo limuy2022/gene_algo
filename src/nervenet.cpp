@@ -1,4 +1,4 @@
-#include "nervenet.hpp"
+#include <nervenet.hpp>
 
 namespace nervenet {
 	nervenet::nervenet(std::initializer_list<size_t> input): netsize(input) {
@@ -38,7 +38,7 @@ namespace nervenet {
 		return v;
 	}
 	
-	double nervenet::valfunc(const mnist::train_data data) {
+	double nervenet::valfunc(const mnist::train_data& data) {
 		
 	}
 }

@@ -1,10 +1,10 @@
 #include <cassert>
 #include <vector>
 #include <cstring>
-#include "matrix.hpp"
-#include "mnist.hpp"
-#include "nervenet.hpp"
-#include "share.hpp"
+#include <matrix.hpp>
+#include <mnist.hpp>
+#include <nervenet.hpp>
+#include <share.hpp>
 
 std::vector<nervenet::nervenet> sons;
 std::initializer_list<size_t> networksize = {784, 20, 20, 10};

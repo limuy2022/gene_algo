@@ -1,4 +1,4 @@
-#include "mnist.hpp"
+#include <mnist.hpp>
 
 namespace mnist {
 	int pic::xsize;

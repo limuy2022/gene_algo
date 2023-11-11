@@ -1,4 +1,4 @@
-#include "share.hpp"
+#include <share.hpp>
 
 namespace share {
 	mnist::train_data traindata;

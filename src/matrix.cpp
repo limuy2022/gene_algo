@@ -1,5 +1,5 @@
-#include "matrix.hpp"
-#include "rand.hpp"
+#include <matrix.hpp>
+#include <rand.hpp>
 
 matrix::matrix(int n, int m):n(n), m(m) {
 	data.resize(n + 1);

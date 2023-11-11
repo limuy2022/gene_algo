@@ -1,5 +1,5 @@
 #pragma once
-#include "mnist.hpp"
+#include <mnist.hpp>
 
 namespace share {
 	extern mnist::train_data traindata;

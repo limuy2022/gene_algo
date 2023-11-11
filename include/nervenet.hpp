@@ -1,7 +1,7 @@
 #pragma once
-#include "matrix.hpp"
-#include "rand.hpp"
-#include "mnist.hpp"
+#include <matrix.hpp>
+#include <rand.hpp>
+#include <mnist.hpp>
 #include <initializer_list>
 
 namespace nervenet {
@@ -20,7 +20,7 @@ namespace nervenet {
 		
 		std::vector<double> calans(const mnist::pic& data);
 		
-		double valfunc(const mnist::train_data data);
+		double valfunc(const mnist::train_data& data);
 	};
 }
 
