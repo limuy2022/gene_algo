@@ -1,3 +1,4 @@
+#include "matrix.hpp"
 #include <nervenet.hpp>
 #include <share.hpp>
 #include <vector>
@@ -11,7 +12,9 @@ namespace nervenet {
 		}
 		for(auto i : input) {
 			nervenum += i;
+			bias.push_back(matrix(1, i));
 		}
+		layer = input.size();
 	}
 
 	void nervenet::randinit() {
@@ -19,7 +22,7 @@ namespace nervenet {
 			i.randset();
 		}
 		for (auto&i : bias) {
-			i = rands::initrand(rands::rand32);
+			i.randset();
 		}
 	}
 
@@ -29,22 +32,25 @@ namespace nervenet {
 		for(int i = 1; i <= share::delivery_son; ++i) {
 			nervenet son(netsize);
 			// 随机bias
-			for(int j = 1; j <= son.nervenum; ++j) {
-				if(rands::rand32() % 1000 < share::mutation * 1000) {
+			auto iter = netsize.begin();
+			for(int j = 0; j < layer; ++j, ++iter) {
+				for(int k = 1; k <= *iter; ++k) {
+					if(rands::rand32() % 1000 < share::mutation * 1000) {
 					// 变异
-					if(rands::rand32() % 1000 < share::bigmutation * 1000) {
-						// 大范围变异
-						son.bias[j] = rands::bigrand(rands::rand32);
+						if(rands::rand32() % 1000 < share::bigmutation * 1000) {
+							// 大范围变异
+							son.bias[j].data[1][k] = rands::bigrand(rands::rand32);
+						} else {
+							// 小范围变异
+							son.bias[j].data[1][k] = rands::initrand(rands::rand32);
+						}
 					} else {
-						// 小范围变异
-						son.bias[j] = rands::initrand(rands::rand32);
-					}
-				} else {
-					// 不变异,随机继承
-					if(rands::rand32() % 2 == 1) {
-						son.bias[j] = mother.bias[j];	
-					} else {
-						son.bias[j] = bias[j];
+						// 不变异,随机继承
+						if(rands::rand32() % 2 == 1) {
+							son.bias[j].data[1][k] = mother.bias[j].data[1][k];	
+						} else {
+							son.bias[j].data[1][k] = bias[j].data[1][k];
+						}
 					}
 				}
 			}

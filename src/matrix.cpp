@@ -40,3 +40,6 @@ void matrix::randset() {
 	}
 }
 
+void matrix::sigmoid() {
+	
+}

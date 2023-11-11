@@ -16,5 +16,7 @@ public:
 	matrix operator+(const matrix&b);
 	
 	void randset();
+
+	void sigmoid();
 };
 

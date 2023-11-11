@@ -9,15 +9,17 @@ namespace nervenet {
 		// 每一列的矩阵
 		std::vector<matrix> nerves;
 		// 偏置参数
-		std::vector<double> bias;
+		std::vector<matrix> bias;
 		// 矩阵规格
 		std::initializer_list<size_t> netsize;
 		// 神经元个数
 		int nervenum = 0;
+		// 神经元层数
+		int layer = 0;
 	public:
 		// 上一次估价函数的得分
 		double rate = 0;
-		
+
 		nervenet(std::initializer_list<size_t> input);
 		
 		void randinit();

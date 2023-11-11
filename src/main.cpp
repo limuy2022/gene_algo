@@ -18,17 +18,27 @@ void init_sons() {
 	for(int i = 1; i <= share::initnum; ++i) {
 		sons.emplace_back(networksize);
 		sons.back().randinit();
+		sons.back().valfunc(share::traindata);
 	}
 }
+
+auto ratecmp = [](const auto&a, const auto&b) {
+	return a.rate < b.rate;
+};
 
 // 繁殖
 // 保留最强的keepnum个个体不被筛选掉
 void reproduction() {
 	for(int i = 1; i <= share::generation; ++i) {
+		decltype(sons) temp, nextans;
+		// 先排序选出前keepnum个
+		std::sort(sons.begin(), sons.end(), ratecmp);
+		for(int j = 0; j < share::keepnum; ++j) {
+			nextans.push_back(sons[j]);
+		}
 		// 将他们随机打乱分组交配
 		std::shuffle(sons.begin(), sons.end(), rands::rand32);
 		// 交配,结果储存在temp中
-		decltype(sons) temp;
 		for(int j = 1; j <= share::delivery_son; j += 2) {
 			const auto& tmp = sons[j].reproduction(sons[j + 1]);
 			temp.insert(temp.end(), tmp.begin(), tmp.end());
@@ -37,9 +47,11 @@ void reproduction() {
 		for(auto&j:temp) {
 			j.valfunc(share::traindata);
 		}
-		std::sort(temp.begin(), temp.end(), [](const auto&a, const auto&b) {
-			return a.rate < b.rate;
-		});
+		std::sort(temp.begin(), temp.end(), ratecmp);
+		for(int j = 0; j < share::initnum - share::keepnum; ++j) {
+			nextans.push_back(temp[j]);
+		}
+		sons = nextans;
 	}
 }
 
