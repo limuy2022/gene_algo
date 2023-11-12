@@ -1,5 +1,6 @@
 #include <matrix.hpp>
 #include <rand.hpp>
+#include <cmath>
 
 matrix::matrix(int n, int m):n(n), m(m) {
 	data.resize(n + 1);
@@ -14,7 +15,7 @@ matrix matrix::operator*(const matrix&b) {
 	for(int i = 1; i <= n; ++i) {
 		for(int j = 1; j <= b.m; ++j) {
 			for(int k = 1; k <= m; ++k) {
-				res.data[i][j] += data[i][k] * data[k][j];	
+				res.data[i][j] += data[i][k] * b.data[k][j];	
 			}
 		}
 	}
@@ -41,5 +42,19 @@ void matrix::randset() {
 }
 
 void matrix::sigmoid() {
-	
+	for(int i = 1; i <= n; ++i) {
+		for(int j = 1; j <= m; ++j) {
+			data[i][j] = sigmoid_interal(data[i][j]);
+		}
+	}
+}
+
+double sigmoid_interal(double x) {
+	if(x >= 0) {
+		double z = exp(-x);
+		return 1.0 / (1.0 + z);
+	} else {
+		double z = exp(x);
+		return z / (1.0 + z);
+	}
 }

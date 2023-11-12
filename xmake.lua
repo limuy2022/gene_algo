@@ -1,6 +1,6 @@
 add_rules("mode.debug", "mode.release")
 set_optimize("fast")
-set_warnings("all")
+set_warnings("all", "error")
 set_languages("c++17", "c17")
 set_rundir(".")
 set_targetdir(".")
@@ -9,6 +9,7 @@ target("gene_algo")
     set_kind("binary")
     add_files("src/*.cpp")
     add_includedirs("include")
+    add_defines("SIMPLE")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io

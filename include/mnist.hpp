@@ -11,7 +11,7 @@ namespace mnist {
 	class pic {
 	public:
 		std::vector<int> val;
-		static int xsize, ysize;
+		static size_t xsize, ysize, sizenum;
 		int number;
 	};
 	

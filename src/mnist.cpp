@@ -1,8 +1,10 @@
+#include <cstdlib>
 #include <mnist.hpp>
 
 namespace mnist {
-	int pic::xsize;
-	int pic::ysize;
+	size_t pic::xsize = 28;
+	size_t pic::ysize = 28;
+	size_t pic::sizenum = pic::xsize * pic::ysize;
 	
 	int ReverseInt(int i) {
 		unsigned char ch1, ch2, ch3, ch4;
@@ -83,6 +85,14 @@ namespace mnist {
 	
 	train_data load(const fs::path& datapath, const fs::path& labelpath) {
 		std::ifstream datafile(datapath), ansfile(labelpath);
+		if(!datafile.good()) {
+			std::cerr << "load " << datapath << "failed";
+			exit(EXIT_FAILURE);
+		}
+		if(!ansfile.good()) {
+			std::cerr << "load " << labelpath << "failed";
+			exit(EXIT_FAILURE);
+		}
 		train_data res;
 		int images_number;
 		datafile >> images_number;
@@ -91,7 +101,6 @@ namespace mnist {
 		res.data.resize(images_number);
 		for(auto&i:res.data){
 			ansfile >> i.number;
-			
 		}
 		datafile.close();
 		ansfile.close();

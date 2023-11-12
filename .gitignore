@@ -44,3 +44,4 @@ data/
 .cache/
 compile_commands.json
 gene_algo
+model/
