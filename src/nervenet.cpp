@@ -32,9 +32,8 @@ namespace nervenet {
 		for(int i = 1; i <= share::delivery_son; ++i) {
 			nervenet son(netsize);
 			// 随机bias
-			auto iter = netsize.begin();
-			for(int j = 0; j < layer; ++j, ++iter) {
-				for(int k = 1; k <= *iter; ++k) {
+			for(int j = 0; j < layer; ++j) {
+				for(int k = 1; k <= son.bias[j].m; ++k) {
 					if(rands::rand32() % 1000 < share::mutation * 1000) {
 					// 变异
 						if(rands::rand32() % 1000 < share::bigmutation * 1000) {
@@ -47,9 +46,11 @@ namespace nervenet {
 					} else {
 						// 不变异,随机继承
 						if(rands::rand32() % 2 == 1) {
-							son.bias[j].data[1][k] = mother.bias[j].data[1][k];	
+							son.bias[j].data[1][k] = \
+							mother.bias[j].data[1][k];	
 						} else {
-							son.bias[j].data[1][k] = bias[j].data[1][k];
+							son.bias[j].data[1][k] = \
+							bias[j].data[1][k];
 						}
 					}
 				}

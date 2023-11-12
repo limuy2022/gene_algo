@@ -65,8 +65,13 @@ void save_data(const nervenet::nervenet& net, const fs::path&res) {
 	for(int j = 0; j < net.nerves.size(); ++j) {
 		for(int k = 1; k <= net.nerves[j].n; ++k) {
 			for(int l = 1; l <= net.nerves[j].m; ++l) {
-				
+				file << net.nerves[j].data[k][l] << ' ';
 			}
+		}
+	}
+	for(auto i:net.bias) {
+		for(int j = 1; j <= i.m; ++j) {
+			file << i.data[1][j] << ' ';
 		}
 	}
 	file.close();
@@ -90,6 +95,6 @@ int main(int argc, char** argv) {
 	init_sons();
 	reproduction();
 	std::sort(sons.begin(), sons.end(), ratecmp);
-	
+	save_data(sons.front(), "first_save");
 	return 0;
 }
