@@ -7,8 +7,8 @@ namespace rands{
 	// 64位随机数
 	extern std::mt19937_64 rand64;
 	// 小范围变异
-	extern std::uniform_real_distribution<> initrand;
+	extern std::uniform_real_distribution<double> initrand;
 	// 大范围变异
-	extern std::uniform_real_distribution<> bigrand;
+	extern std::uniform_real_distribution<double> bigrand;
 }
 

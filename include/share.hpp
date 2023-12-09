@@ -12,13 +12,13 @@ namespace share {
 	// 初始化个体数
 	inline const int initnum = 10;
 	// 繁殖的代数
-	inline const int generation = 10;
+	inline const int generation = 30;
 	// 交配的个体数
 	inline const int delivery_son = 10;
 	// 保留的个体数
 	inline const int keepnum = 1;
 	// 变异概率
-	inline const double mutation = 0.03;
+	inline const double mutation = 0.08;
 	// 小范围变异转换大范围变异概率
 	inline const double bigmutation = 0.2;
 	// 训练数据大小
@@ -27,7 +27,7 @@ namespace share {
 	inline const size_t testnum = 10000;
 #ifdef SIMPLE
 	// 每次从测试数据中取值的比例
-	inline const double trainprecent = 0.05;
+	inline const double trainprecent = 0.1;
 #else
 	inlinr const double trainprecent = 0.5;
 #endif

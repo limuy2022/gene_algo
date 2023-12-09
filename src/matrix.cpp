@@ -1,6 +1,7 @@
 #include <matrix.hpp>
 #include <rand.hpp>
 #include <cmath>
+#include <omp.h>
 
 matrix::matrix(int n, int m):n(n), m(m) {
 	data.resize(n + 1);
@@ -25,9 +26,12 @@ matrix matrix::operator*(const matrix&b) {
 matrix matrix::operator+(const matrix&b) {
 	assert(n == b.n && m == b.m);
 	matrix res(n, m);
-	for(int i = 1; i <= n; ++i) {
-		for(int j = 1; j <= b.m; ++j) {
-			res.data[i][j] = data[i][j] + b.data[i][j];
+	#pragma omp parallel num_threads(2)
+	{
+		for(int i = 1; i <= n; ++i) {
+			for(int j = 1; j <= b.m; ++j) {
+				res.data[i][j] = data[i][j] + b.data[i][j];
+			}
 		}
 	}
 	return res;

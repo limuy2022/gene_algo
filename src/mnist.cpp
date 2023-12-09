@@ -86,11 +86,11 @@ namespace mnist {
 	train_data load(const fs::path& datapath, const fs::path& labelpath) {
 		std::ifstream datafile(datapath), ansfile(labelpath);
 		if(!datafile.good()) {
-			std::cerr << "load " << datapath << "failed";
+			std::cerr << "load " << datapath << " failed";
 			exit(EXIT_FAILURE);
 		}
 		if(!ansfile.good()) {
-			std::cerr << "load " << labelpath << "failed";
+			std::cerr << "load " << labelpath << " failed";
 			exit(EXIT_FAILURE);
 		}
 		train_data res;
@@ -101,6 +101,13 @@ namespace mnist {
 		res.data.resize(images_number);
 		for(auto&i:res.data){
 			ansfile >> i.number;
+			for(size_t j = 1; j <= mnist::pic::xsize; ++j) {
+				for(size_t k = 1; k <= mnist::pic::ysize; ++k) {
+					int tmp;
+					datafile >> tmp;
+					i.val.push_back(tmp);
+				}
+			}
 		}
 		datafile.close();
 		ansfile.close();

@@ -10,6 +10,8 @@ target("gene_algo")
     add_files("src/*.cpp")
     add_includedirs("include")
     add_defines("SIMPLE")
+    add_cxxflags("-fopenmp")
+    add_ldflags("-fopenmp")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io

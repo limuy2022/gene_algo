@@ -71,6 +71,11 @@ void reproduction() {
 
 void save_data(const nervenet::nervenet& net, const fs::path&res) {
 	std::ofstream file(res);
+	if(!file.good()) {
+		std::cerr << "Saving error";
+		exit(EXIT_FAILURE);
+	}
+	file << net.require_num << ' '<< net.nervenum << ' ';
 	for(size_t j = 0; j < net.nerves.size(); ++j) {
 		for(int k = 1; k <= net.nerves[j].n; ++k) {
 			for(int l = 1; l <= net.nerves[j].m; ++l) {
@@ -89,6 +94,25 @@ void save_data(const nervenet::nervenet& net, const fs::path&res) {
 nervenet::nervenet loadnet(const fs::path& model_file) {
 	nervenet::nervenet ret(networksize);
 	std::ifstream file(model_file);
+	if(!file.good()) {
+		std::cerr << "Loading net error";
+		exit(EXIT_FAILURE);
+	}
+	size_t require_num, nervenum;
+	file >> require_num >> nervenum;
+	std::vector<double> weights, biass;
+	for(size_t i = 1; i <= require_num; ++i) {
+		double tmp;
+		file >> tmp;
+		weights.push_back(tmp);
+	}
+	for(size_t i = 1; i <= nervenum; ++i) {
+		double tmp;
+		file >> tmp;
+		biass.push_back(tmp);
+	}
+	ret.load(weights, biass);
+	file.close();
 	return ret;
 }
 
@@ -116,13 +140,18 @@ int main(int argc, char** argv) {
 						refnum = j;
 					}
 				}
-				std::cerr << "Output:" << refnum << ".Expect:" << i.number <<'\n';
 				if(refnum == i.number) {
 					right_num++;
+				} else {
+					std::cerr << "Output:" << refnum << ".Expect:" << i.number <<".Weights:";
+					for(auto output:ret) {
+						std::cerr << output <<' ';
+					}
+					std::cerr << "\n";
 				}
 			}
 			printf("Your net's rate is %.8lf.Total %d,Right %d\n", right_num * 1.0 / total, total, right_num);
-			exit(0);
+			exit(EXIT_SUCCESS);
 		} else {
 			std::cerr << "unrecognized option";
 			exit(EXIT_FAILURE);
@@ -144,7 +173,7 @@ int main(int argc, char** argv) {
 	std::cout << "finish training\n" << std::flush;
 	std::sort(sons.begin(), sons.end(), ratecmp);
 	std::cout << "Saving data....\n" << std::flush;
-	save_data(sons.front(), "nervenet_data_save");
+	save_data(sons.front(), "model/nervenet_data_save");
 	std::cout << "END\n" << std::flush;
 	return 0;
 }

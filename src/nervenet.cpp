@@ -1,4 +1,5 @@
 #include "matrix.hpp"
+#include <cassert>
 #include <cstdlib>
 #include <nervenet.hpp>
 #include <share.hpp>
@@ -152,15 +153,16 @@ namespace nervenet {
 	void nervenet::load(const std::vector<double>& weights, const std::vector<double>& bias_save) {
 		assert(weights.size() == require_num);
 		assert(bias_save.size() == nervenum);
-		int cnt = 0;
+		size_t cnt = 0;
 		for(auto&i:nerves) {
 			for(int j = 1; j <= i.n; ++j) {
-				for(int k = 1; k <= i.m; ++j) {
+				for(int k = 1; k <= i.m; ++k) {
 					i.data[j][k] = weights[cnt];
 					cnt++;
 				}
 			}
 		}
+		assert(cnt == require_num);
 		cnt = 0;
 		for(auto&i:bias) {
 			for(int j = 1; j <= i.m; ++j) {
@@ -168,5 +170,6 @@ namespace nervenet {
 				cnt++;
 			}
 		}
+		assert(cnt == nervenum);
 	}
 }
